@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from 'react';
+import './FileInput.css';
 
 interface ImageInfo {
   url: string;
