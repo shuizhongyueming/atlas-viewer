@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { FileInput } from './FileInput';
 
 interface AppProps {}
 
 function App({}: AppProps) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="presets">
+        <FileInput
+          onAltasChange={(altasData) => console.log(altasData)}
+          onImageChange={(imgData) => console.log(imgData)}
+        />
+        <span className="presets__title">预设</span>
+        <ul className="presets__list">
+          <li>Laya</li>
+          <li>Egret</li>
+          <li>Custom</li>
+        </ul>
+      </div>
     </div>
   );
 }
