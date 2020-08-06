@@ -2,7 +2,7 @@
 
 Make a easy view of the image sprite
 
-![screen shot](imgaes/screen-shot.png)
+![screen shot](/images/screen-shot.png)
 
 Watch the demo [here]().
 
