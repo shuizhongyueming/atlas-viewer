@@ -1,4 +1,28 @@
-# New Project
+# AltasViewer
+
+Make a easy view of the image sprite
+
+![screen shot](imgaes/screen-shot.png)
+
+Watch the demo [here]().
+
+## Usage
+
+### 1. Set the key path of some property
+
+We have make some preset for framework like Laya and Egret, and also you can make a custom one.
+
+### 2. Input your image file and atlas config file
+
+This input will not upload to any server, just process it in browser to read image and config.
+
+### 3. Done
+
+You can select any img name from the right list to see which one it is, and also you can select an img from blocks above the altas image.
+
+## Setup
+
+Clone this repo and run `yarn` or `npm install`;
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
@@ -23,7 +47,3 @@ Builds a static copy of your site to the `build/` folder.
 Your app is ready to be deployed!
 
 **For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" or "@snowpack/plugin-parcel" to your `snowpack.config.json` config file.
-
-### Q: What about Eject?
-
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
