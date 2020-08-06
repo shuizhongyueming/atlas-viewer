@@ -13,19 +13,19 @@ function App({}: AppProps) {
   const [state, dispatch] = useReducer(reducer, initState);
   return (
     <div className="App">
+      <PresetSelect
+        selectedPreset={state.selectedPreset}
+        presetList={state.presets}
+        onChange={(preset) =>
+          dispatch({ type: Actions.SET_PRESET, data: preset })
+        }
+      />
       <FileInput
         onAltasChange={(altasData) =>
           dispatch({ type: Actions.SET_ALTAS_DATA, data: altasData })
         }
         onImageChange={(imgData) =>
           dispatch({ type: Actions.SET_IMG_DATA, data: imgData })
-        }
-      />
-      <PresetSelect
-        selectedPreset={state.selectedPreset}
-        presetList={state.presets}
-        onChange={(preset) =>
-          dispatch({ type: Actions.SET_PRESET, data: preset })
         }
       />
       <KeyPahtInfoInput
@@ -46,7 +46,7 @@ function App({}: AppProps) {
           atlasData={state.altasData}
           keyPathInfo={state.keyPathInfo}
           selectedAtlasItem={state.selectedAtlasItem}
-          onSelected={(n) =>
+          onSelect={(n) =>
             dispatch({ type: Actions.SET_SELECTED_ALTAS_ITEM, data: n })
           }
         />

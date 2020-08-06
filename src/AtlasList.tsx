@@ -7,19 +7,19 @@ export interface AtlasListProps {
   atlasData: any;
   keyPathInfo: State['keyPathInfo'];
   selectedAtlasItem: string;
-  onSelected: (n: string) => void;
+  onSelect: (n: string) => void;
 }
 
 export function AtlasList({
   atlasData,
   keyPathInfo,
   selectedAtlasItem,
-  onSelected,
+  onSelect,
 }: AtlasListProps) {
   function onClick(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     const { id } = e.currentTarget.dataset;
     if (id) {
-      onSelected(id);
+      onSelect(id);
     }
   }
   let list: React.ReactElement[] = [];
