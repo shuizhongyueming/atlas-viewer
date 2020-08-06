@@ -1,0 +1,32 @@
+.key-path-info {
+  flex: auto 0 0;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+}
+.key-path-info__list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.key-path-info__title {
+  font-size: 28px;
+  line-height: 1;
+  margin-right: 20px;
+  flex: auto 0 0;
+}
+.key-path-info__item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10px;
+  margin-bottom: 4px;
+}
+.key-path-info__item label {
+  width: 80px;
+  text-align: right;
+}
+.key-path-info__item input {
+  width: 120px;
+}
