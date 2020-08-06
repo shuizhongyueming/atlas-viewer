@@ -1,3 +1,7 @@
+.key-path-info {
+  flex: 88px 0 0;
+  margin-bottom: 10px;
+}
 .key-path-info__title {
   margin-bottom: 10px;
 }

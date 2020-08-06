@@ -40,10 +40,7 @@ export const initState = {
     height: 0,
   },
   altasData: {},
-  displaySize: {
-    width: 0,
-    height: 0,
-  },
+  selectedAtlasItem: '',
   keyPathInfo: { ...presetMap.Laya },
   selectedPreset: 'Laya',
   presets: ['Laya', 'Egret', 'Custom'],
@@ -60,6 +57,7 @@ export enum Actions {
   SET_ALTAS_DATA,
   SET_PRESET,
   UPDATE_PRESET,
+  SET_SELECTED_ALTAS_ITEM,
 }
 
 export function reducer(state: State, action: Action): State {
@@ -81,6 +79,11 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         keyPathInfo: { ...action.data },
+      };
+    case Actions.SET_SELECTED_ALTAS_ITEM:
+      return {
+        ...state,
+        selectedAtlasItem: action.data,
       };
     default:
       throw new Error('unknow action');

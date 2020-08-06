@@ -1,4 +1,14 @@
 .App {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  flex: 100px 1 1;
+  align-items: stretch;
+  overflow: hidden;
 }
