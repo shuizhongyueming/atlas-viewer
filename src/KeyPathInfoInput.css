@@ -1,0 +1,21 @@
+.key-path-info__title {
+  margin-bottom: 10px;
+}
+.key-path-info__list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.key-path-info__item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10px;
+  margin-bottom: 4px;
+}
+.key-path-info__item label {
+  width: 80px;
+  text-align: right;
+}
+.key-path-info__item input {
+  width: 120px;
+}

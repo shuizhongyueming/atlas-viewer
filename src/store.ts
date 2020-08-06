@@ -2,12 +2,12 @@ import { act } from 'react-dom/test-utils';
 
 export const emptyKeyPathInfo = {
   setType: 'object',
-  setKeyPath: '',
-  nameKeyPath: '',
-  xKeyPath: '',
-  yKeyPath: '',
-  wKeyPath: '',
-  hKeyPath: '',
+  set: '',
+  name: '',
+  x: '',
+  y: '',
+  w: '',
+  h: '',
 };
 
 export type KeyPathInfo = typeof emptyKeyPathInfo;
@@ -15,21 +15,21 @@ export type KeyPathInfo = typeof emptyKeyPathInfo;
 const presetMap: { [key: string]: KeyPathInfo } = {
   Laya: {
     setType: 'object',
-    setKeyPath: 'frames',
-    nameKeyPath: '0',
-    xKeyPath: '1.frame.x',
-    yKeyPath: '1.frame.y',
-    wKeyPath: '1.frame.w',
-    hKeyPath: '1.frame.h',
+    set: 'frames',
+    name: '0',
+    x: '1.frame.x',
+    y: '1.frame.y',
+    w: '1.frame.w',
+    h: '1.frame.h',
   },
   Egret: {
     setType: 'object',
-    setKeyPath: 'frames',
-    nameKeyPath: '0',
-    xKeyPath: '1.x',
-    yKeyPath: '1.y',
-    wKeyPath: '1.w',
-    hKeyPath: '1.h',
+    set: 'frames',
+    name: '0',
+    x: '1.x',
+    y: '1.y',
+    w: '1.w',
+    h: '1.h',
   },
 };
 

@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import './App.css';
 import { FileInput } from './FileInput';
 import { PresetSelect } from './PresetSelect';
+import { KeyPahtInfoInput } from './KeyPathInfoInput';
 import { reducer, initState, Actions } from './store';
 
 interface AppProps {}
@@ -24,6 +25,10 @@ function App({}: AppProps) {
         onChange={(preset) =>
           dispatch({ type: Actions.SET_PRESET, data: preset })
         }
+      />
+      <KeyPahtInfoInput
+        data={state.keyPathInfo}
+        onChange={(d) => dispatch({ type: Actions.UPDATE_PRESET, data: d })}
       />
     </div>
   );
