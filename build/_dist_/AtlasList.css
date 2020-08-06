@@ -1,0 +1,31 @@
+.atlas-list {
+  flex: 20vw 0 0;
+  border-left: 1px solid #000;
+  padding-left: 4px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.atlas-list__title {
+  font-size: 24px;
+}
+.atlas-list__list {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  flex: auto 1 1;
+  overflow-y: scroll;
+}
+.atlas-list__list li {
+  cursor: pointer;
+}
+
+.atlas-list__list li:hover {
+  color: lightblue;
+}
+
+.atlas-list__list li.atlas-list__selected {
+  color: blue;
+}
