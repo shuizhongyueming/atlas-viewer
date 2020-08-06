@@ -1,4 +1,6 @@
 {
+  "name": "atlas-viewer",
+  "homepage": "https://www.shuizhongyueming.com/atlas-viewer/",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
