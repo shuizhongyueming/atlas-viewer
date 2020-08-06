@@ -1,3 +1,38 @@
+import { act } from 'react-dom/test-utils';
+
+export const emptyKeyPathInfo = {
+  setType: 'object',
+  setKeyPath: '',
+  nameKeyPath: '',
+  xKeyPath: '',
+  yKeyPath: '',
+  wKeyPath: '',
+  hKeyPath: '',
+};
+
+export type KeyPathInfo = typeof emptyKeyPathInfo;
+
+const presetMap: { [key: string]: KeyPathInfo } = {
+  Laya: {
+    setType: 'object',
+    setKeyPath: 'frames',
+    nameKeyPath: '0',
+    xKeyPath: '1.frame.x',
+    yKeyPath: '1.frame.y',
+    wKeyPath: '1.frame.w',
+    hKeyPath: '1.frame.h',
+  },
+  Egret: {
+    setType: 'object',
+    setKeyPath: 'frames',
+    nameKeyPath: '0',
+    xKeyPath: '1.x',
+    yKeyPath: '1.y',
+    wKeyPath: '1.w',
+    hKeyPath: '1.h',
+  },
+};
+
 export const initState = {
   imgData: {
     url: '',
@@ -9,14 +44,7 @@ export const initState = {
     width: 0,
     height: 0,
   },
-  keyPathInfo: {
-    setType: 'object',
-    nameKeyPath: '',
-    xKeyPaht: '',
-    yKeyPaht: '',
-    wKeyPaht: '',
-    hKeyPaht: '',
-  },
+  keyPathInfo: { ...presetMap.Laya },
   selectedPreset: 'Laya',
   presets: ['Laya', 'Egret', 'Custom'],
 };
@@ -31,6 +59,7 @@ export enum Actions {
   SET_IMG_DATA,
   SET_ALTAS_DATA,
   SET_PRESET,
+  UPDATE_PRESET,
 }
 
 export function reducer(state: State, action: Action): State {
@@ -40,7 +69,19 @@ export function reducer(state: State, action: Action): State {
     case Actions.SET_ALTAS_DATA:
       return { ...state, altasData: JSON.parse(action.data) };
     case Actions.SET_PRESET:
-      return { ...state, selectedPreset: action.data };
+      const presetInfo = presetMap[action.data]
+        ? presetMap[action.data]
+        : emptyKeyPathInfo;
+      return {
+        ...state,
+        selectedPreset: action.data,
+        keyPathInfo: { ...presetInfo },
+      };
+    case Actions.UPDATE_PRESET:
+      return {
+        ...state,
+        keyPathInfo: { ...action.data },
+      };
     default:
       throw new Error('unknow action');
   }
