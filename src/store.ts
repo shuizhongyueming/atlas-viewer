@@ -30,6 +30,7 @@ export interface Action {
 export enum Actions {
   SET_IMG_DATA,
   SET_ALTAS_DATA,
+  SET_PRESET,
 }
 
 export function reducer(state: State, action: Action): State {
@@ -38,6 +39,8 @@ export function reducer(state: State, action: Action): State {
       return { ...state, imgData: action.data };
     case Actions.SET_ALTAS_DATA:
       return { ...state, altasData: JSON.parse(action.data) };
+    case Actions.SET_PRESET:
+      return { ...state, selectedPreset: action.data };
     default:
       throw new Error('unknow action');
   }
