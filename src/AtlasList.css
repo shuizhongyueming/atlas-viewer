@@ -8,6 +8,9 @@
   flex-direction: column;
 }
 
+.atlas-list__title {
+  font-size: 24px;
+}
 .atlas-list__list {
   list-style-type: none;
   padding: 10px;

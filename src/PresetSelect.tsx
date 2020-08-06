@@ -30,7 +30,7 @@ export function PresetSelect({
   ));
   return (
     <div className="presets">
-      <span className="presets__title">预设：</span>
+      <span className="presets__title">Presets: </span>
       <ul className="presets__list">{list}</ul>
     </div>
   );

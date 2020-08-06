@@ -29,7 +29,7 @@ export function KeyPahtInfoInput({ data, onChange }: KeyPahtInfoInputProps) {
   ));
   return (
     <div className="key-path-info">
-      <div className="key-path-info__title">KeyPath配置：</div>
+      <div className="key-path-info__title">Key Path Config: </div>
       <div className="key-path-info__list">{list}</div>
     </div>
   );

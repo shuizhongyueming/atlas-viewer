@@ -20,6 +20,10 @@ function App({}: AppProps) {
           dispatch({ type: Actions.SET_PRESET, data: preset })
         }
       />
+      <KeyPahtInfoInput
+        data={state.keyPathInfo}
+        onChange={(d) => dispatch({ type: Actions.UPDATE_PRESET, data: d })}
+      />
       <FileInput
         onAltasChange={(altasData) =>
           dispatch({ type: Actions.SET_ALTAS_DATA, data: altasData })
@@ -27,10 +31,6 @@ function App({}: AppProps) {
         onImageChange={(imgData) =>
           dispatch({ type: Actions.SET_IMG_DATA, data: imgData })
         }
-      />
-      <KeyPahtInfoInput
-        data={state.keyPathInfo}
-        onChange={(d) => dispatch({ type: Actions.UPDATE_PRESET, data: d })}
       />
       <div className="content">
         <ImgViewer

@@ -50,11 +50,11 @@ export function FileInput({ onImageChange, onAltasChange }: FileInputProps) {
   return (
     <div className="fileInput">
       <div className="fileInput__item">
-        <span className="fileInput__name">图片：</span>
+        <span className="fileInput__name">Image: </span>
         <input type="file" onChange={handleImageChange} />
       </div>
       <div className="fileInput__item">
-        <span className="fileInput__name">配置：</span>
+        <span className="fileInput__name">Config: </span>
         <input type="file" onChange={handleAltasChange} />
       </div>
     </div>

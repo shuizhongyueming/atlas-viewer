@@ -39,7 +39,7 @@ export function AtlasList({
   }
   return (
     <div className="atlas-list">
-      <div className="atlas-list__title">图片列表</div>
+      <div className="atlas-list__title">Altas List</div>
       <ul className="atlas-list__list">{list}</ul>
     </div>
   );
