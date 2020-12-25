@@ -36,10 +36,16 @@ const localPresetKey = 'atlas-viewer-presets';
 try {
   const localData = localStorage.getItem(localPresetKey);
   if (localData) {
-    Object.entries(localData).forEach(([k, v]) => (presetMap[k] = v));
+    Object.entries(JSON.parse(localData) as PresetMap).forEach(
+      ([k, v]) => (presetMap[k] = v),
+    );
   }
 } catch (e) {
   console.log('sync local data failed');
+}
+
+function updateLocalPreset(presetMap: PresetMap) {
+  localStorage.setItem(localPresetKey, JSON.stringify(presetMap));
 }
 
 export interface Atlas {
@@ -55,9 +61,8 @@ export interface Atlas {
 
 export type PresetFunc = (data: any) => Atlas | Atlas[];
 
-export const emptyPrest = generatePresetFunc(
-  `return {set: 'empty', atlasList: []}`,
-);
+const emptyPresetFuncBody = `return {set: 'empty', atlasList: []}`;
+export const emptyPrest = generatePresetFunc(emptyPresetFuncBody);
 
 export const initState = {
   imgData: {
@@ -105,11 +110,13 @@ export enum Actions {
   SET_IMG_DATA,
   SET_ALTAS_DATA,
   SET_PRESET,
+  ADD_PRESET,
   UPDATE_PRESET,
   SET_SELECTED_ALTAS_ITEM,
 }
 
 export function reducer(state: State, action: Action): State {
+  let newPresetMap;
   switch (action.type) {
     case Actions.SET_IMG_DATA:
       return { ...state, imgData: action.data };
@@ -119,14 +126,27 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         selectedPreset: action.data,
+        currentPresetFunc: generatePresetFunc(state.presetMap[action.data]),
       };
-    case Actions.UPDATE_PRESET:
+    case Actions.ADD_PRESET:
+      newPresetMap = {
+        ...presetMap,
+        [action.data]: emptyPresetFuncBody,
+      };
+      updateLocalPreset(newPresetMap);
       return {
         ...state,
-        presetMap: {
-          ...state.presetMap,
-          [state.selectedPreset]: action.data,
-        },
+        presetMap: newPresetMap,
+      };
+    case Actions.UPDATE_PRESET:
+      newPresetMap = {
+        ...state.presetMap,
+        [state.selectedPreset]: action.data,
+      };
+      updateLocalPreset(newPresetMap);
+      return {
+        ...state,
+        presetMap: newPresetMap,
         currentPresetFunc: generatePresetFunc(action.data),
       };
     case Actions.SET_SELECTED_ALTAS_ITEM:

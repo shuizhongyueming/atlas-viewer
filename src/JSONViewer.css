@@ -10,3 +10,7 @@
 .json-viewer__right {
   flex: 1 1 33%;
 }
+
+.json-viewer__right > div {
+  background-color: #fafafa;
+}

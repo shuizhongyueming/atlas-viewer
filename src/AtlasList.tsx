@@ -21,7 +21,7 @@ export function AtlasList({
     }
   }
   let list: React.ReactElement[] = atlasData.map(({ set, atlasList }) => (
-    <div className="atlas-set">
+    <div className="atlas-set" key={set}>
       <div className="atlas-set__title">{set}</div>
       <ul className="atlas-list__list">
         {atlasList.map(({ name }) => (

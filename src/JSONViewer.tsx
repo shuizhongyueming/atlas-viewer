@@ -1,11 +1,13 @@
 import ReactJson from 'react-json-view';
 import React, { useEffect, useState } from 'react';
-import AceEditor from 'react-ace';
 import { emptyPrest, PresetFunc } from './store';
 import { generatePresetFunc } from './utils';
-import 'ace-builds/src-noconflict/mode-javascript';
-import 'ace-builds/src-noconflict/theme-monokai';
 import './JSONViewer.css';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism.css';
 
 export interface JSONViewerProps {
   json: {};
@@ -80,7 +82,20 @@ export function JSONViewer(props: JSONViewerProps) {
         <p>or a list of that structure.</p>
       </div>
       <div className="json-viewer__right">
-        <AceEditor
+        <Editor
+          value={funcBody}
+          onValueChange={(code) => {
+            updateFuncBody(code);
+            updatePreviewState(false);
+          }}
+          highlight={(code) => highlight(code, languages.js)}
+          padding={10}
+          style={{
+            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontSize: 14,
+          }}
+        />
+        {/* <AceEditor
           placeholder="Placeholder Text"
           mode="javascript"
           theme="solarized_light"
@@ -101,7 +116,7 @@ export function JSONViewer(props: JSONViewerProps) {
             showLineNumbers: true,
             tabSize: 2,
           }}
-        />
+        /> */}
       </div>
     </div>
   );

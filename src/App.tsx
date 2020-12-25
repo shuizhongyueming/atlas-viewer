@@ -36,6 +36,9 @@ function App({}: AppProps) {
         onChange={(preset) =>
           dispatch({ type: Actions.SET_PRESET, data: preset })
         }
+        handleAddPresetName={(presetName) =>
+          dispatch({ type: Actions.ADD_PRESET, data: presetName })
+        }
       />
       <FileInput
         onAltasChange={(altasData) =>
