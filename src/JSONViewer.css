@@ -1,0 +1,12 @@
+.json-content {
+  width: 100%;
+}
+.json-viewer {
+  display: flex;
+  flex-direction: row;
+}
+.json-viewer__left,
+.json-viewer__middle,
+.json-viewer__right {
+  flex: 1 1 33%;
+}

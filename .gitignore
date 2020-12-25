@@ -2,3 +2,4 @@
 web_modules
 node_modules
 build
+.yarn-error.log

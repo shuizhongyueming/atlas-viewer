@@ -12,3 +12,30 @@
   align-items: stretch;
   overflow: hidden;
 }
+
+.content .rc-tabs {
+  width: 100%;
+  border: none;
+}
+.content .rc-tabs-nav {
+  margin-bottom: 20px;
+}
+.content .rc-tabs-content-holder {
+  flex: 1 1;
+  overflow: hidden;
+}
+.content .rc-tabs-tab {
+  margin-left: 20px;
+}
+.content .rc-tabs-tab-btn:focus {
+  outline: none;
+}
+.content .rc-tabs-content {
+  height: 100%;
+}
+.content .rc-tabs-tabpane:focus {
+  outline: none;
+}
+.content .rc-tabs-tabpane {
+  display: flex;
+}

@@ -1,19 +1,17 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react';
-import type { State } from './store';
+import type { Atlas, State } from './store';
 import './ImgViewer.css';
 import { getValueWithKeyPath } from './utils';
 
 export interface ImgViewerProps {
   imgData: State['imgData'];
-  altasData: any;
+  atlasData: Atlas[];
   selectedAtlasItem: string;
-  keyPathInfo: State['keyPathInfo'];
   onSelect: (itemKey: string) => void;
 }
 export function ImgViewer({
   imgData,
-  altasData,
-  keyPathInfo,
+  atlasData: altasData,
   selectedAtlasItem,
   onSelect,
 }: ImgViewerProps) {
@@ -57,24 +55,16 @@ export function ImgViewer({
   }
 
   let list: ReactElement[] = [];
-  if (altasData[keyPathInfo.set] && imgData.url) {
-    list = Object.entries(altasData[keyPathInfo.set])
-      .map((n) => ({
-        name: getValueWithKeyPath(n, keyPathInfo.name),
-        x: getValueWithKeyPath(n, keyPathInfo.x) * scale,
-        y: getValueWithKeyPath(n, keyPathInfo.y) * scale,
-        w: getValueWithKeyPath(n, keyPathInfo.w) * scale,
-        h: getValueWithKeyPath(n, keyPathInfo.h) * scale,
-      }))
-      .map(({ name, x, y, w, h }) => {
-        console.log({ name, x, y, w, h });
+  if (imgData.url) {
+    altasData.forEach((d) =>
+      d.atlasList.forEach(({ name, x, y, w, h }) => {
         const style = {
-          width: w,
-          height: h,
-          left: x,
-          top: y,
+          width: w * scale,
+          height: h * scale,
+          left: x * scale,
+          top: y * scale,
         };
-        return (
+        list.push(
           <div
             className={`img-viewer__item ${
               name === selectedAtlasItem ? 'selected' : ''
@@ -83,10 +73,12 @@ export function ImgViewer({
             key={name}
             data-id={name}
             onClick={onClick}
-          ></div>
+          ></div>,
         );
-      });
+      }),
+    );
   }
+  console.log({ list });
 
   return (
     <div className="img-viewer">

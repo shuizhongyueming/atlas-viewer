@@ -1,7 +1,0 @@
-{
-  "extends": "@snowpack/app-scripts-react",
-  "buildOptions": {
-    "baseUrl": "https://www.shuizhongyueming.com/atlas-viewer/"
-  },
-  "plugins": []
-}

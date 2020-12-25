@@ -1,37 +1,63 @@
-import { act } from 'react-dom/test-utils';
+import { generatePresetFunc } from './utils';
 
-export const emptyKeyPathInfo = {
-  setType: 'object',
-  set: '',
-  name: '',
-  x: '',
-  y: '',
-  w: '',
-  h: '',
+export type PresetMap = { [key: string]: string };
+const presetMap: PresetMap = {
+  Laya: `
+    return {
+      set: data.meta.image,
+      atlasList: Object.entries(data.frames).map(([k, v]) => {
+        return {
+          name: k,
+          x: v.frame.x,
+          y: v.frame.y,
+          w: v.frame.w,
+          h: v.frame.h,
+        }
+      })
+    }
+  `,
+  Egret: `
+    return {
+      set: data.file,
+      atlasList: Object.entries(data.frames).map(([k, v]) => {
+        return {
+          name: k,
+          x: v.x,
+          y: v.y,
+          w: v.w,
+          h: v.h,
+        }
+      })
+    }
+  `,
 };
 
-export type KeyPathInfo = typeof emptyKeyPathInfo;
+const localPresetKey = 'atlas-viewer-presets';
+try {
+  const localData = localStorage.getItem(localPresetKey);
+  if (localData) {
+    Object.entries(localData).forEach(([k, v]) => (presetMap[k] = v));
+  }
+} catch (e) {
+  console.log('sync local data failed');
+}
 
-const presetMap: { [key: string]: KeyPathInfo } = {
-  Laya: {
-    setType: 'object',
-    set: 'frames',
-    name: '0',
-    x: '1.frame.x',
-    y: '1.frame.y',
-    w: '1.frame.w',
-    h: '1.frame.h',
-  },
-  Egret: {
-    setType: 'object',
-    set: 'frames',
-    name: '0',
-    x: '1.x',
-    y: '1.y',
-    w: '1.w',
-    h: '1.h',
-  },
-};
+export interface Atlas {
+  set: string;
+  atlasList: Array<{
+    name: string;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  }>;
+}
+
+export type PresetFunc = (data: any) => Atlas | Atlas[];
+
+export const emptyPrest = generatePresetFunc(
+  `return {set: 'empty', atlasList: []}`,
+);
 
 export const initState = {
   imgData: {
@@ -39,11 +65,34 @@ export const initState = {
     width: 0,
     height: 0,
   },
-  altasData: {},
+  altasData: {
+    prop: {
+      'a.png': {
+        x: 1,
+        y: 2,
+        w: 3,
+        h: 4,
+      },
+    },
+    frames: [
+      {
+        name: 'a.png',
+        x: 1,
+        y: 2,
+        w: 3,
+        h: 4,
+      },
+    ],
+    arr: [
+      { 'a.png': [1, 2, 3, 4] },
+      { 'b.png': [1, 2, 3, 4] },
+      { 'c.png': [1, 2, 3, 4] },
+    ],
+  },
   selectedAtlasItem: '',
-  keyPathInfo: { ...presetMap.Laya },
   selectedPreset: 'Laya',
-  presets: ['Laya', 'Egret', 'Custom'],
+  currentPresetFunc: generatePresetFunc(presetMap.Laya),
+  presetMap,
 };
 
 export type State = typeof initState;
@@ -67,24 +116,25 @@ export function reducer(state: State, action: Action): State {
     case Actions.SET_ALTAS_DATA:
       return { ...state, altasData: JSON.parse(action.data) };
     case Actions.SET_PRESET:
-      const presetInfo = presetMap[action.data]
-        ? presetMap[action.data]
-        : emptyKeyPathInfo;
       return {
         ...state,
         selectedPreset: action.data,
-        keyPathInfo: { ...presetInfo },
       };
     case Actions.UPDATE_PRESET:
       return {
         ...state,
-        keyPathInfo: { ...action.data },
+        presetMap: {
+          ...state.presetMap,
+          [state.selectedPreset]: action.data,
+        },
+        currentPresetFunc: generatePresetFunc(action.data),
       };
     case Actions.SET_SELECTED_ALTAS_ITEM:
       return {
         ...state,
         selectedAtlasItem: action.data,
       };
+
     default:
       throw new Error('unknow action');
   }

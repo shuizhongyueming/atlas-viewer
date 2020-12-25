@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { getValueWithKeyPath } from './utils';
-import type { State } from './store';
+import type { Atlas, State } from './store';
 import './AtlasList.css';
 
 export interface AtlasListProps {
-  atlasData: any;
-  keyPathInfo: State['keyPathInfo'];
+  atlasData: Atlas[];
   selectedAtlasItem: string;
   onSelect: (n: string) => void;
 }
 
 export function AtlasList({
   atlasData,
-  keyPathInfo,
   selectedAtlasItem,
   onSelect,
 }: AtlasListProps) {
@@ -22,25 +20,27 @@ export function AtlasList({
       onSelect(id);
     }
   }
-  let list: React.ReactElement[] = [];
-  if (atlasData[keyPathInfo.set]) {
-    list = Object.entries(atlasData[keyPathInfo.set])
-      .map((n) => getValueWithKeyPath(n, keyPathInfo.name))
-      .map((n) => (
-        <li
-          key={n}
-          data-id={n}
-          onClick={onClick}
-          className={selectedAtlasItem === n ? 'atlas-list__selected' : ''}
-        >
-          {n}
-        </li>
-      ));
-  }
+  let list: React.ReactElement[] = atlasData.map(({ set, atlasList }) => (
+    <div className="atlas-set">
+      <div className="atlas-set__title">{set}</div>
+      <ul className="atlas-list__list">
+        {atlasList.map(({ name }) => (
+          <li
+            key={name}
+            data-id={name}
+            onClick={onClick}
+            className={selectedAtlasItem === name ? 'atlas-list__selected' : ''}
+          >
+            {name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  ));
   return (
     <div className="atlas-list">
       <div className="atlas-list__title">Altas List</div>
-      <ul className="atlas-list__list">{list}</ul>
+      <div className="atlas-list__content">{list}</div>
     </div>
   );
 }
