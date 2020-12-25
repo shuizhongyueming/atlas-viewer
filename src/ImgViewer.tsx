@@ -24,16 +24,22 @@ export function ImgViewer({
   currentBackgournd,
   onSelect,
 }: ImgViewerProps) {
-  const img = useRef<HTMLImageElement>(null);
+  const cvs = useRef<HTMLCanvasElement>(null);
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    if (img.current) {
-      img.current.onload = () => {
-        if (img.current?.width) {
-          setScale(img.current.width / imgData.width);
+    if (cvs.current) {
+      const img = new Image();
+      img.onload = () => {
+        if (cvs.current) {
+          const ctx = cvs.current.getContext('2d');
+          ctx?.drawImage(img, 0, 0);
         }
       };
+      img.src = imgData.url;
+      if (cvs.current) {
+        setScale(cvs.current.getBoundingClientRect().width / imgData.width);
+      }
     }
   }, [imgData]);
 
@@ -44,9 +50,10 @@ export function ImgViewer({
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      if (img.current?.width) {
-        console.log('img.current.width', img.current.width);
-        setScale(img.current.width / imgData.width);
+      if (cvs.current) {
+        // console.log('img.current.width', cvs.current.width);
+        // setScale(cvs.current.width / imgData.width);
+        setScale(cvs.current.getBoundingClientRect().width / imgData.width);
       }
     }, 500);
   }
@@ -91,7 +98,8 @@ export function ImgViewer({
 
   return (
     <div className={`img-viewer ${backgroundClassName[currentBackgournd]}`}>
-      <img src={imgData.url} ref={img} />
+      <canvas width={imgData.width} height={imgData.height} ref={cvs} />
+      {/* <img src={imgData.url} ref={cvs} /> */}
       {list}
     </div>
   );
