@@ -48,6 +48,12 @@ function updateLocalPreset(presetMap: PresetMap) {
   localStorage.setItem(localPresetKey, JSON.stringify(presetMap));
 }
 
+export enum BackgroundType {
+  Transparent,
+  Dark,
+  Light,
+}
+
 export interface Atlas {
   set: string;
   atlasList: Array<{
@@ -70,34 +76,12 @@ export const initState = {
     width: 0,
     height: 0,
   },
-  altasData: {
-    prop: {
-      'a.png': {
-        x: 1,
-        y: 2,
-        w: 3,
-        h: 4,
-      },
-    },
-    frames: [
-      {
-        name: 'a.png',
-        x: 1,
-        y: 2,
-        w: 3,
-        h: 4,
-      },
-    ],
-    arr: [
-      { 'a.png': [1, 2, 3, 4] },
-      { 'b.png': [1, 2, 3, 4] },
-      { 'c.png': [1, 2, 3, 4] },
-    ],
-  },
+  altasData: {},
   selectedAtlasItem: '',
   selectedPreset: 'Laya',
   currentPresetFunc: generatePresetFunc(presetMap.Laya),
   presetMap,
+  currentBackgournd: BackgroundType.Transparent,
 };
 
 export type State = typeof initState;
@@ -113,6 +97,7 @@ export enum Actions {
   ADD_PRESET,
   UPDATE_PRESET,
   SET_SELECTED_ALTAS_ITEM,
+  SET_BACKGROUND,
 }
 
 export function reducer(state: State, action: Action): State {
@@ -154,7 +139,11 @@ export function reducer(state: State, action: Action): State {
         ...state,
         selectedAtlasItem: action.data,
       };
-
+    case Actions.SET_BACKGROUND:
+      return {
+        ...state,
+        currentBackgournd: action.data,
+      };
     default:
       throw new Error('unknow action');
   }

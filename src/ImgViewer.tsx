@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react';
-import type { Atlas, State } from './store';
+import { Atlas, BackgroundType, State } from './store';
 import './ImgViewer.css';
 import { getValueWithKeyPath } from './utils';
 
@@ -7,12 +7,21 @@ export interface ImgViewerProps {
   imgData: State['imgData'];
   atlasData: Atlas[];
   selectedAtlasItem: string;
+  currentBackgournd: BackgroundType;
   onSelect: (itemKey: string) => void;
 }
+
+const backgroundClassName = {
+  [BackgroundType.Transparent]: 'transparent',
+  [BackgroundType.Dark]: 'dark',
+  [BackgroundType.Light]: 'light',
+};
+
 export function ImgViewer({
   imgData,
   atlasData: altasData,
   selectedAtlasItem,
+  currentBackgournd,
   onSelect,
 }: ImgViewerProps) {
   const img = useRef<HTMLImageElement>(null);
@@ -78,10 +87,10 @@ export function ImgViewer({
       }),
     );
   }
-  console.log({ list });
+  console.log('background class:', backgroundClassName[currentBackgournd]);
 
   return (
-    <div className="img-viewer">
+    <div className={`img-viewer ${backgroundClassName[currentBackgournd]}`}>
       <img src={imgData.url} ref={img} />
       {list}
     </div>
