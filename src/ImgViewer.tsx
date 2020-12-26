@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react';
 import { Atlas, BackgroundType, State } from './store';
 import './ImgViewer.css';
-import { getValueWithKeyPath } from './utils';
 
 export interface ImgViewerProps {
   imgData: State['imgData'];
   atlasData: Atlas[];
+  selectedAtlasSet: string;
   selectedAtlasItem: string;
   currentBackgournd: BackgroundType;
-  onSelect: (itemKey: string) => void;
+  onSelect: (p: { item: string; set: string }) => void;
 }
 
 const backgroundClassName = {
@@ -20,6 +20,7 @@ const backgroundClassName = {
 export function ImgViewer({
   imgData,
   atlasData: altasData,
+  selectedAtlasSet,
   selectedAtlasItem,
   currentBackgournd,
   onSelect,
@@ -43,6 +44,8 @@ export function ImgViewer({
     }
   }, [imgData]);
 
+  function handleDelete() {}
+
   let timer: NodeJS.Timeout;
   function handleResize() {
     if (timer) {
@@ -63,10 +66,10 @@ export function ImgViewer({
     return () => window.removeEventListener('resize', handleResize);
   });
 
-  function onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    const { id } = e.currentTarget.dataset;
-    if (id) {
-      onSelect(id);
+  function onClickItem(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    const { id, set } = e.currentTarget.dataset;
+    if (id && set) {
+      onSelect({ item: id, set });
     }
   }
 
@@ -83,12 +86,15 @@ export function ImgViewer({
         list.push(
           <div
             className={`img-viewer__item ${
-              name === selectedAtlasItem ? 'selected' : ''
+              name === selectedAtlasItem && d.set === selectedAtlasSet
+                ? 'selected'
+                : ''
             }`}
             style={style}
             key={name}
+            data-set={d.set}
             data-id={name}
-            onClick={onClick}
+            onClick={onClickItem}
           ></div>,
         );
       }),
@@ -98,6 +104,8 @@ export function ImgViewer({
 
   return (
     <div className={`img-viewer ${backgroundClassName[currentBackgournd]}`}>
+      <button className="img-viewer__delete">Delete Selected</button>
+      <button className="img-viewer__download">Download Image</button>
       <canvas width={imgData.width} height={imgData.height} ref={cvs} />
       {/* <img src={imgData.url} ref={cvs} /> */}
       {list}

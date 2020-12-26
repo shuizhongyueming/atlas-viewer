@@ -5,19 +5,21 @@ import './AtlasList.css';
 
 export interface AtlasListProps {
   atlasData: Atlas[];
+  selectedAtlasSet: string;
   selectedAtlasItem: string;
-  onSelect: (n: string) => void;
+  onSelect: (p: { item: string; set: string }) => void;
 }
 
 export function AtlasList({
   atlasData,
+  selectedAtlasSet,
   selectedAtlasItem,
   onSelect,
 }: AtlasListProps) {
   function onClick(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
-    const { id } = e.currentTarget.dataset;
-    if (id) {
-      onSelect(id);
+    const { id, set } = e.currentTarget.dataset;
+    if (id && set) {
+      onSelect({ item: id, set });
     }
   }
   let list: React.ReactElement[] = atlasData.map(({ set, atlasList }) => (
@@ -28,8 +30,13 @@ export function AtlasList({
           <li
             key={name}
             data-id={name}
+            data-set={set}
             onClick={onClick}
-            className={selectedAtlasItem === name ? 'atlas-list__selected' : ''}
+            className={
+              selectedAtlasItem === name && selectedAtlasSet === set
+                ? 'atlas-list__selected'
+                : ''
+            }
           >
             {name}
           </li>

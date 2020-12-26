@@ -66,6 +66,7 @@ function App({}: AppProps) {
               imgData={state.imgData}
               atlasData={atlas}
               currentBackgournd={state.currentBackgournd}
+              selectedAtlasSet={state.selectedAtlasSet}
               selectedAtlasItem={state.selectedAtlasItem}
               onSelect={(n) =>
                 dispatch({ type: Actions.SET_SELECTED_ALTAS_ITEM, data: n })
@@ -73,6 +74,7 @@ function App({}: AppProps) {
             />
             <AtlasList
               atlasData={atlas}
+              selectedAtlasSet={state.selectedAtlasSet}
               selectedAtlasItem={state.selectedAtlasItem}
               onSelect={(n) =>
                 dispatch({ type: Actions.SET_SELECTED_ALTAS_ITEM, data: n })

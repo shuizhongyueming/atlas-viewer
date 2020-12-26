@@ -35,3 +35,12 @@
   border-color: red !important;
   border-width: 2px;
 }
+.img-viewer__delete,
+.img-viewer__download {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.img-viewer__delete {
+  right: 150px;
+}

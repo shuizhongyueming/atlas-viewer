@@ -77,6 +77,7 @@ export const initState = {
     height: 0,
   },
   altasData: {},
+  selectedAtlasSet: '',
   selectedAtlasItem: '',
   selectedPreset: 'Laya',
   currentPresetFunc: generatePresetFunc(presetMap.Laya),
@@ -137,7 +138,8 @@ export function reducer(state: State, action: Action): State {
     case Actions.SET_SELECTED_ALTAS_ITEM:
       return {
         ...state,
-        selectedAtlasItem: action.data,
+        selectedAtlasItem: action.data.item,
+        selectedAtlasSet: action.data.set,
       };
     case Actions.SET_BACKGROUND:
       return {
