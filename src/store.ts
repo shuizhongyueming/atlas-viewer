@@ -54,15 +54,17 @@ export enum BackgroundType {
   Light,
 }
 
+export interface AtlasInfo {
+  name: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 export interface Atlas {
   set: string;
-  atlasList: Array<{
-    name: string;
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-  }>;
+  atlasList: AtlasInfo[];
 }
 
 export type PresetFunc = (data: any) => Atlas | Atlas[];

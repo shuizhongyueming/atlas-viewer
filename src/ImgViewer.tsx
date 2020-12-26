@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react';
-import { Atlas, BackgroundType, State } from './store';
+import { Atlas, AtlasInfo, BackgroundType, State } from './store';
 import './ImgViewer.css';
 
 export interface ImgViewerProps {
@@ -17,6 +17,11 @@ const backgroundClassName = {
   [BackgroundType.Dark]: 'dark',
   [BackgroundType.Light]: 'light',
 };
+
+const imgDatas: Array<{
+  info: AtlasInfo;
+  data: ImageData;
+}> = [];
 
 export function ImgViewer({
   imgData,
@@ -49,7 +54,14 @@ export function ImgViewer({
   function handleKeyDown(e: KeyboardEvent) {
     console.log(e.key);
     if (e.key === 'Backspace') {
-      handleDelete();
+      return handleDelete();
+    }
+    if (e.ctrlKey && e.key === 'z') {
+      const imgData = imgDatas.pop();
+      const ctx = cvs.current?.getContext('2d');
+      if (imgData && ctx) {
+        ctx.putImageData(imgData.data, imgData.info.x, imgData.info.y);
+      }
     }
   }
 
@@ -61,8 +73,17 @@ export function ImgViewer({
       );
       if (targetRect && cvs.current) {
         const ctx = cvs.current.getContext('2d');
-        const { x, y, w, h } = targetRect;
-        ctx?.clearRect(x, y, w, h);
+        if (ctx) {
+          const { x, y, w, h } = targetRect;
+          // 清除之前，先记录图片数据，方便实现回退功能
+          const imgData = ctx.getImageData(x, y, w, h);
+          ctx.clearRect(x, y, w, h);
+          // 先进先出
+          imgDatas.push({
+            info: targetRect,
+            data: imgData,
+          });
+        }
       }
     }
   }
