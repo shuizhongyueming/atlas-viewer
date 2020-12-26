@@ -72,11 +72,13 @@ export const emptyPrest = generatePresetFunc(emptyPresetFuncBody);
 
 export const initState = {
   imgData: {
+    name: '',
     url: '',
     width: 0,
     height: 0,
   },
-  altasData: {},
+  atlasData: {},
+  atlasFileName: '',
   selectedAtlasSet: '',
   selectedAtlasItem: '',
   selectedPreset: 'Laya',
@@ -107,7 +109,11 @@ export function reducer(state: State, action: Action): State {
     case Actions.SET_IMG_DATA:
       return { ...state, imgData: action.data };
     case Actions.SET_ALTAS_DATA:
-      return { ...state, altasData: JSON.parse(action.data) };
+      return {
+        ...state,
+        atlasData: JSON.parse(action.data.content),
+        atlasFileName: action.data.name,
+      };
     case Actions.SET_PRESET:
       return {
         ...state,

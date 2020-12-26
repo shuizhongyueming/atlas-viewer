@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import './FileInput.css';
 
 interface ImageInfo {
+  name: string;
   url: string;
   width: number;
   height: number;
@@ -9,25 +10,25 @@ interface ImageInfo {
 
 export interface FileInputProps {
   onImageChange(imgData: ImageInfo): void;
-  onAltasChange(altasData: string): void;
+  onAltasChange(p: { name: string; content: string }): void;
 }
 
-function getImageInfo(file: any, cb: (data: ImageInfo) => void) {
+function getImageInfo(file: File, cb: (data: ImageInfo) => void) {
   const url = window.URL.createObjectURL(file);
   const img = new Image();
   img.onload = function () {
     const width = img.naturalWidth || img.width;
     const height = img.naturalHeight || img.height;
 
-    cb({ url, width, height });
+    cb({ url, width, height, name: file.name });
   };
   img.src = url;
 }
 
-function getAltasContent(file: any, cb: (content: string) => void) {
+function getAltasContent(file: File, cb: FileInputProps['onAltasChange']) {
   const reader = new FileReader();
   reader.addEventListener('load', function () {
-    cb(reader.result as string);
+    cb({ name: file.name, content: reader.result as string });
   });
   reader.readAsText(file);
 }
@@ -43,6 +44,7 @@ export function FileInput({ onImageChange, onAltasChange }: FileInputProps) {
   function handleAltasChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.currentTarget.files?.[0];
     if (file) {
+      console.log(file);
       getAltasContent(file, onAltasChange);
     }
   }

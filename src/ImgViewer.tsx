@@ -5,6 +5,7 @@ import './ImgViewer.css';
 export interface ImgViewerProps {
   imgData: State['imgData'];
   atlasData: Atlas[];
+  atlasFileName: string;
   selectedAtlasSet: string;
   selectedAtlasItem: string;
   currentBackgournd: BackgroundType;
@@ -20,6 +21,7 @@ const backgroundClassName = {
 export function ImgViewer({
   imgData,
   atlasData: altasData,
+  atlasFileName,
   selectedAtlasSet,
   selectedAtlasItem,
   currentBackgournd,
@@ -44,7 +46,38 @@ export function ImgViewer({
     }
   }, [imgData]);
 
-  function handleDelete() {}
+  function handleKeyDown(e: KeyboardEvent) {
+    console.log(e.key);
+    if (e.key === 'Backspace') {
+      handleDelete();
+    }
+  }
+
+  function handleDelete() {
+    const targetSet = altasData.find((n) => n.set === selectedAtlasSet);
+    if (targetSet) {
+      const targetRect = targetSet.atlasList.find(
+        (n) => n.name === selectedAtlasItem,
+      );
+      if (targetRect && cvs.current) {
+        const ctx = cvs.current.getContext('2d');
+        const { x, y, w, h } = targetRect;
+        ctx?.clearRect(x, y, w, h);
+      }
+    }
+  }
+
+  function handleDownload() {
+    if (cvs.current && imgData.url) {
+      cvs.current.toBlob((blob) => {
+        const anchor = document.createElement('a');
+        anchor.download = imgData.name;
+        anchor.href = URL.createObjectURL(blob);
+        anchor.click();
+        URL.revokeObjectURL(anchor.href);
+      });
+    }
+  }
 
   let timer: NodeJS.Timeout;
   function handleResize() {
@@ -63,7 +96,11 @@ export function ImgViewer({
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   });
 
   function onClickItem(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -104,8 +141,12 @@ export function ImgViewer({
 
   return (
     <div className={`img-viewer ${backgroundClassName[currentBackgournd]}`}>
-      <button className="img-viewer__delete">Delete Selected</button>
-      <button className="img-viewer__download">Download Image</button>
+      <button className="img-viewer__delete" onClick={handleDelete}>
+        Delete Selected
+      </button>
+      <button className="img-viewer__download" onClick={handleDownload}>
+        Download Image
+      </button>
       <canvas width={imgData.width} height={imgData.height} ref={cvs} />
       {/* <img src={imgData.url} ref={cvs} /> */}
       {list}

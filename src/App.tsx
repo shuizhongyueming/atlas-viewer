@@ -16,7 +16,7 @@ function App({}: AppProps) {
   const [state, dispatch] = useReducer(reducer, initState);
   let atlas: Atlas[] = [];
   try {
-    const data = state.currentPresetFunc(state.altasData);
+    const data = state.currentPresetFunc(state.atlasData);
     if (!Array.isArray(data)) {
       atlas = [data];
     } else {
@@ -65,6 +65,7 @@ function App({}: AppProps) {
             <ImgViewer
               imgData={state.imgData}
               atlasData={atlas}
+              atlasFileName={state.atlasFileName}
               currentBackgournd={state.currentBackgournd}
               selectedAtlasSet={state.selectedAtlasSet}
               selectedAtlasItem={state.selectedAtlasItem}
@@ -84,7 +85,7 @@ function App({}: AppProps) {
           <TabPane tab="JSON" key="2">
             <div className="json-content">
               <JSONViewer
-                json={state.altasData}
+                json={state.atlasData}
                 presetBody={state.presetMap[state.selectedPreset]}
                 presetFunc={state.currentPresetFunc}
                 onChange={(d) =>
