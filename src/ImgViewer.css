@@ -38,6 +38,7 @@
 .img-viewer__delete,
 .img-viewer__download {
   position: absolute;
+  z-index: 10;
   top: 20px;
   right: 20px;
 }
