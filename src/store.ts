@@ -30,6 +30,20 @@ const presetMap: PresetMap = {
       })
     }
   `,
+  Phaser: `
+    return {
+      set: data.meta.image,
+      atlasList: Object.entries(data.frames).map(([k, v]) => {
+        return {
+          name: k,
+          x: v.frame.x,
+          y: v.frame.y,
+          w: v.frame.w,
+          h: v.frame.h,
+        }
+      })
+    }
+  `,
 };
 
 const localPresetKey = 'atlas-viewer-presets';
