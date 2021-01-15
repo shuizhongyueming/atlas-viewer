@@ -1,1 +1,11 @@
-import b from"https://www.shuizhongyueming.com/atlas-viewer/__snowpack__/env.js";import.meta.env=b;import a from"../web_modules/react.js";import c from"../web_modules/react-dom.js";import d from"./App.js";import"./index.css.proxy.js";c.render(a.createElement(a.StrictMode,null,a.createElement(d,null)),document.getElementById("root")),import.meta.hot&&import.meta.hot.accept();
+import __SNOWPACK_ENV__ from '../__snowpack__/env.js';
+import.meta.env = __SNOWPACK_ENV__;
+
+import React from "../web_modules/react.js";
+import ReactDOM from "../web_modules/react-dom.js";
+import App2 from "./App.js";
+import "./index.css.proxy.js";
+ReactDOM.render(/* @__PURE__ */ React.createElement(React.StrictMode, null, /* @__PURE__ */ React.createElement(App2, null)), document.getElementById("root"));
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}

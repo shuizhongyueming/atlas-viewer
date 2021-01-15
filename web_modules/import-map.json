@@ -1,6 +1,14 @@
 {
   "imports": {
+    "prismjs/components/prism-clike": "./prismjs/components/prism-clike.js",
+    "prismjs/components/prism-core": "./prismjs/components/prism-core.js",
+    "prismjs/components/prism-javascript": "./prismjs/components/prism-javascript.js",
+    "prismjs/themes/prism.css": "./prismjs/themes/prism.css",
+    "rc-tabs": "./rc-tabs.js",
+    "rc-tabs/assets/index.css": "./rc-tabs/assets/index.css",
     "react": "./react.js",
-    "react-dom": "./react-dom.js"
+    "react-dom": "./react-dom.js",
+    "react-json-view": "./react-json-view.js",
+    "react-simple-code-editor": "./react-simple-code-editor.js"
   }
 }

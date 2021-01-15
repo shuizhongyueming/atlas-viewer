@@ -1,0 +1,22 @@
+.json-content {
+  width: 100%;
+}
+.json-viewer {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.json-viewer__left,
+.json-viewer__middle,
+.json-viewer__right {
+  flex: 1 1 33%;
+  height: 100%;
+}
+
+.json-viewer__right > div {
+  background-color: #fafafa;
+}
+.react-json-view {
+  overflow-y: hidden;
+  height: 100%;
+}

@@ -1,1 +1,137 @@
-import h,{useState as r,useRef as s,useEffect as j}from"../web_modules/react.js";import"./ImgViewer.css.proxy.js";import{getValueWithKeyPath as d}from"./utils.js";export function ImgViewer({imgData:e,altasData:k,keyPathInfo:c,selectedAtlasItem:t,onSelect:u}){const b=s(null),[g,l]=r(1);j(()=>{b.current&&(b.current.onload=()=>{b.current?.width&&l(b.current.width/e.width)})},[e]);let i;function m(){i&&(console.log("clear timeout"),clearTimeout(i)),i=setTimeout(()=>{b.current?.width&&(console.log("img.current.width",b.current.width),l(b.current.width/e.width))},500)}j(()=>(window.addEventListener("resize",m),()=>window.removeEventListener("resize",m)));function v(a){const{id:f}=a.currentTarget.dataset;f&&u(f)}let n=[];return k[c.set]&&e.url&&(n=Object.entries(k[c.set]).map(a=>({name:d(a,c.name),x:d(a,c.x)*g,y:d(a,c.y)*g,w:d(a,c.w)*g,h:d(a,c.h)*g})).map(({name:a,x:f,y:o,w:p,h:q})=>{console.log({name:a,x:f,y:o,w:p,h:q});const w={width:p,height:q,left:f,top:o};return h.createElement("div",{className:`img-viewer__item ${a===t?"selected":""}`,style:w,key:a,"data-id":a,onClick:v})})),h.createElement("div",{className:"img-viewer"},h.createElement("img",{src:e.url,ref:b}),n)}
+import React, {useState, useRef, useEffect} from "../web_modules/react.js";
+import {BackgroundType} from "./store.js";
+import "./ImgViewer.css.proxy.js";
+const backgroundClassName = {
+  [BackgroundType.Transparent]: "transparent",
+  [BackgroundType.Dark]: "dark",
+  [BackgroundType.Light]: "light"
+};
+const imgDatas = [];
+export function ImgViewer({
+  imgData,
+  atlasData: altasData,
+  atlasFileName,
+  selectedAtlasSet,
+  selectedAtlasItem,
+  currentBackgournd,
+  onSelect
+}) {
+  const cvs = useRef(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    if (cvs.current) {
+      const img = new Image();
+      img.onload = () => {
+        if (cvs.current) {
+          const ctx = cvs.current.getContext("2d");
+          ctx?.drawImage(img, 0, 0);
+        }
+      };
+      img.src = imgData.url;
+      if (cvs.current) {
+        setScale(cvs.current.getBoundingClientRect().width / imgData.width);
+      }
+    }
+  }, [imgData]);
+  function handleKeyDown(e) {
+    console.log(e.key);
+    if (e.key === "Backspace") {
+      return handleDelete();
+    }
+    if (e.ctrlKey && e.key === "z") {
+      const imgData2 = imgDatas.pop();
+      const ctx = cvs.current?.getContext("2d");
+      if (imgData2 && ctx) {
+        ctx.putImageData(imgData2.data, imgData2.info.x, imgData2.info.y);
+      }
+    }
+  }
+  function handleDelete() {
+    const targetSet = altasData.find((n) => n.set === selectedAtlasSet);
+    if (targetSet) {
+      const targetRect = targetSet.atlasList.find((n) => n.name === selectedAtlasItem);
+      if (targetRect && cvs.current) {
+        const ctx = cvs.current.getContext("2d");
+        if (ctx) {
+          const {x, y, w, h} = targetRect;
+          const imgData2 = ctx.getImageData(x, y, w, h);
+          ctx.clearRect(x, y, w, h);
+          imgDatas.push({
+            info: targetRect,
+            data: imgData2
+          });
+        }
+      }
+    }
+  }
+  function handleDownload() {
+    if (cvs.current && imgData.url) {
+      cvs.current.toBlob((blob) => {
+        const anchor = document.createElement("a");
+        anchor.download = imgData.name;
+        anchor.href = URL.createObjectURL(blob);
+        anchor.click();
+        URL.revokeObjectURL(anchor.href);
+      });
+    }
+  }
+  let timer;
+  function handleResize() {
+    if (timer) {
+      console.log("clear timeout");
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      if (cvs.current) {
+        setScale(cvs.current.getBoundingClientRect().width / imgData.width);
+      }
+    }, 500);
+  }
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  });
+  function onClickItem(e) {
+    const {id, set} = e.currentTarget.dataset;
+    if (id && set) {
+      onSelect({item: id, set});
+    }
+  }
+  let list = [];
+  if (imgData.url) {
+    altasData.forEach((d) => d.atlasList.forEach(({name, x, y, w, h}) => {
+      const style = {
+        width: w * scale,
+        height: h * scale,
+        left: x * scale,
+        top: y * scale
+      };
+      list.push(/* @__PURE__ */ React.createElement("div", {
+        className: `img-viewer__item ${name === selectedAtlasItem && d.set === selectedAtlasSet ? "selected" : ""}`,
+        style,
+        key: name,
+        "data-set": d.set,
+        "data-id": name,
+        onClick: onClickItem
+      }));
+    }));
+  }
+  console.log("background class:", backgroundClassName[currentBackgournd]);
+  return /* @__PURE__ */ React.createElement("div", {
+    className: `img-viewer ${backgroundClassName[currentBackgournd]}`
+  }, /* @__PURE__ */ React.createElement("button", {
+    className: "img-viewer__delete",
+    onClick: handleDelete
+  }, "Delete Selected"), /* @__PURE__ */ React.createElement("button", {
+    className: "img-viewer__download",
+    onClick: handleDownload
+  }, "Download Image"), /* @__PURE__ */ React.createElement("canvas", {
+    width: imgData.width,
+    height: imgData.height,
+    ref: cvs
+  }), list);
+}

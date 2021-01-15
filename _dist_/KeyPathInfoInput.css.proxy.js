@@ -1,33 +1,10 @@
-const code=`.key-path-info {\r
-  flex: auto 0 0;\r
-  margin-bottom: 10px;\r
-  display: flex;\r
-  flex-direction: row;\r
-  flex-wrap: no-wrap;\r
-}\r
-.key-path-info__list {\r
-  display: flex;\r
-  flex-direction: row;\r
-  flex-wrap: wrap;\r
-  align-items: center;\r
-}\r
-.key-path-info__title {\r
-  font-size: 28px;\r
-  line-height: 1;\r
-  margin-right: 20px;\r
-  flex: auto 0 0;\r
-}\r
-.key-path-info__item {\r
-  display: flex;\r
-  flex-direction: row;\r
-  margin-right: 10px;\r
-  margin-bottom: 4px;\r
-}\r
-.key-path-info__item label {\r
-  width: 80px;\r
-  text-align: right;\r
-}\r
-.key-path-info__item input {\r
-  width: 120px;\r
-}\r
-`,styleEl=document.createElement("style"),codeEl=document.createTextNode(code);styleEl.type="text/css",styleEl.appendChild(codeEl),document.head.appendChild(styleEl);
+// [snowpack] add styles to the page (skip if no document exists)
+if (typeof document !== 'undefined') {
+  const code = ".key-path-info {\n  flex: auto 0 0;\n  margin-bottom: 10px;\n  display: flex;\n  flex-direction: row;\n  flex-wrap: no-wrap;\n}\n.key-path-info__list {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  align-items: center;\n}\n.key-path-info__title {\n  font-size: 28px;\n  line-height: 1;\n  margin-right: 20px;\n  flex: auto 0 0;\n}\n.key-path-info__item {\n  display: flex;\n  flex-direction: row;\n  margin-right: 10px;\n  margin-bottom: 4px;\n}\n.key-path-info__item label {\n  width: 80px;\n  text-align: right;\n}\n.key-path-info__item input {\n  width: 120px;\n}\n";
+
+  const styleEl = document.createElement("style");
+  const codeEl = document.createTextNode(code);
+  styleEl.type = 'text/css';
+  styleEl.appendChild(codeEl);
+  document.head.appendChild(styleEl);
+}

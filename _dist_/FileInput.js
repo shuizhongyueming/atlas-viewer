@@ -1,1 +1,51 @@
-import c from"../web_modules/react.js";import"./FileInput.css.proxy.js";function h(e,f){const a=window.URL.createObjectURL(e),b=new Image();b.onload=function(){const g=b.naturalWidth||b.width,d=b.naturalHeight||b.height;f({url:a,width:g,height:d})},b.src=a}function i(e,f){const a=new FileReader();a.addEventListener("load",function(){f(a.result)}),a.readAsText(e)}export function FileInput({onImageChange:e,onAltasChange:f}){function a(g){const d=g.currentTarget.files?.[0];d&&h(d,e)}function b(g){const d=g.currentTarget.files?.[0];d&&i(d,f)}return c.createElement("div",{className:"fileInput"},c.createElement("div",{className:"fileInput__item"},c.createElement("span",{className:"fileInput__name"},"Image: "),c.createElement("input",{type:"file",onChange:a})),c.createElement("div",{className:"fileInput__item"},c.createElement("span",{className:"fileInput__name"},"Config: "),c.createElement("input",{type:"file",onChange:b})))}
+import React from "../web_modules/react.js";
+import "./FileInput.css.proxy.js";
+function getImageInfo(file, cb) {
+  const url = window.URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = function() {
+    const width = img.naturalWidth || img.width;
+    const height = img.naturalHeight || img.height;
+    cb({url, width, height, name: file.name});
+  };
+  img.src = url;
+}
+function getAltasContent(file, cb) {
+  const reader = new FileReader();
+  reader.addEventListener("load", function() {
+    cb({name: file.name, content: reader.result});
+  });
+  reader.readAsText(file);
+}
+export function FileInput({onImageChange, onAltasChange}) {
+  function handleImageChange(e) {
+    const file = e.currentTarget.files?.[0];
+    if (file) {
+      getImageInfo(file, onImageChange);
+    }
+  }
+  function handleAltasChange(e) {
+    const file = e.currentTarget.files?.[0];
+    if (file) {
+      console.log(file);
+      getAltasContent(file, onAltasChange);
+    }
+  }
+  return /* @__PURE__ */ React.createElement("div", {
+    className: "fileInput"
+  }, /* @__PURE__ */ React.createElement("div", {
+    className: "fileInput__item"
+  }, /* @__PURE__ */ React.createElement("span", {
+    className: "fileInput__name"
+  }, "Image: "), /* @__PURE__ */ React.createElement("input", {
+    type: "file",
+    onChange: handleImageChange
+  })), /* @__PURE__ */ React.createElement("div", {
+    className: "fileInput__item"
+  }, /* @__PURE__ */ React.createElement("span", {
+    className: "fileInput__name"
+  }, "Config: "), /* @__PURE__ */ React.createElement("input", {
+    type: "file",
+    onChange: handleAltasChange
+  })));
+}

@@ -1,1 +1,36 @@
-import b from"../web_modules/react.js";import{getValueWithKeyPath as g}from"./utils.js";import"./AtlasList.css.proxy.js";export function AtlasList({atlasData:d,keyPathInfo:c,selectedAtlasItem:h,onSelect:i}){function j(a){const{id:f}=a.currentTarget.dataset;f&&i(f)}let e=[];return d[c.set]&&(e=Object.entries(d[c.set]).map(a=>g(a,c.name)).map(a=>b.createElement("li",{key:a,"data-id":a,onClick:j,className:h===a?"atlas-list__selected":""},a))),b.createElement("div",{className:"atlas-list"},b.createElement("div",{className:"atlas-list__title"},"Altas List"),b.createElement("ul",{className:"atlas-list__list"},e))}
+import React from "../web_modules/react.js";
+import "./AtlasList.css.proxy.js";
+export function AtlasList({
+  atlasData,
+  selectedAtlasSet,
+  selectedAtlasItem,
+  onSelect
+}) {
+  function onClick(e) {
+    const {id, set} = e.currentTarget.dataset;
+    if (id && set) {
+      onSelect({item: id, set});
+    }
+  }
+  let list = atlasData.map(({set, atlasList}) => /* @__PURE__ */ React.createElement("div", {
+    className: "atlas-set",
+    key: set
+  }, /* @__PURE__ */ React.createElement("div", {
+    className: "atlas-set__title"
+  }, set), /* @__PURE__ */ React.createElement("ul", {
+    className: "atlas-list__list"
+  }, atlasList.map(({name}) => /* @__PURE__ */ React.createElement("li", {
+    key: name,
+    "data-id": name,
+    "data-set": set,
+    onClick,
+    className: selectedAtlasItem === name && selectedAtlasSet === set ? "atlas-list__selected" : ""
+  }, name)))));
+  return /* @__PURE__ */ React.createElement("div", {
+    className: "atlas-list"
+  }, /* @__PURE__ */ React.createElement("div", {
+    className: "atlas-list__title"
+  }, "Altas List"), /* @__PURE__ */ React.createElement("div", {
+    className: "atlas-list__content"
+  }, list));
+}
