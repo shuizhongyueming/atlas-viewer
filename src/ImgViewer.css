@@ -36,6 +36,7 @@
   border-width: 2px;
 }
 .img-viewer__delete,
+.img-viewer__download-select,
 .img-viewer__download {
   position: absolute;
   z-index: 10;
@@ -44,4 +45,7 @@
 }
 .img-viewer__delete {
   right: 150px;
+}
+.img-viewer__download-select {
+  right: 280px;
 }

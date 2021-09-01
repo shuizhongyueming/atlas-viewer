@@ -65,6 +65,36 @@ export function ImgViewer({
     }
   }
 
+  function handleDownloadSelected() {
+    const targetSet = altasData.find((n) => n.set === selectedAtlasSet);
+    if (targetSet) {
+      const targetRect = targetSet.atlasList.find(
+        (n) => n.name === selectedAtlasItem,
+      );
+      if (targetRect && cvs.current) {
+        const ctx = cvs.current.getContext('2d');
+        if (ctx) {
+          const { x, y, w, h } = targetRect;
+          // 清除之前，先记录图片数据，方便实现回退功能
+          const imgData = ctx.getImageData(x, y, w, h);
+          const tempCanvas = document.createElement('canvas');
+          tempCanvas.width = w;
+          tempCanvas.height = h;
+          const tempCtx = tempCanvas.getContext('2d');
+          tempCtx?.putImageData(imgData, 0, 0);
+
+          tempCanvas.toBlob((blob) => {
+            const anchor = document.createElement('a');
+            anchor.href = URL.createObjectURL(blob);
+            anchor.download = targetRect.name;
+            anchor.click();
+            URL.revokeObjectURL(anchor.href);
+          });
+        }
+      }
+    }
+  }
+
   function handleDelete() {
     const targetSet = altasData.find((n) => n.set === selectedAtlasSet);
     if (targetSet) {
@@ -162,6 +192,12 @@ export function ImgViewer({
 
   return (
     <div className={`img-viewer ${backgroundClassName[currentBackgournd]}`}>
+      <button
+        className="img-viewer__download-select"
+        onClick={handleDownloadSelected}
+      >
+        Download Selected
+      </button>
       <button className="img-viewer__delete" onClick={handleDelete}>
         Delete Selected
       </button>
